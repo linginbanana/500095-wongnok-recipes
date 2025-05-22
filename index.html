@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-T">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wongnok recipes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #f8f8f8;
+        }
+        .active-nav {
+            border-bottom: 2px solid #FF6400;
+            color: #FF6400;
+        }
+        .btn-primary {
+            background-color: #FF6400;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #e05a00;
+        }
+        .form-input {
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 10px 12px;
+            transition: border-color 0.3s;
+        }
+        .form-input:focus {
+            border-color: #FF6400;
+            outline: none;
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 100; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 24px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .modal-close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-close-button:hover,
+        .modal-close-button:focus {
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button" onclick="closeModal()">&times;</span>
+            <p id="modalMessageText" class="text-lg mt-4"></p>
+            <button onclick="closeModal()" class="mt-6 btn-primary py-2 px-6 rounded-lg">ตกลง</button>
+        </div>
+    </div>
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center">
+            <div class="flex items-center space-x-2 mb-2 sm:mb-0">
+                <img src="https://img.wongnai.com/p/1920x0/2021/01/08/0922640a107d418f969049f992d5d1f6.png" alt="Wongnok Logo" class="h-10">
+                 <h1 class="text-3xl font-bold text-[#FF6400]">Wongnok recipes</h1>
+            </div>
+           
+            <div class="flex items-center space-x-4" id="authLinks">
+                </div>
+        </div>
+    </header>
+
+    <nav class="bg-white shadow-sm mb-6">
+        <div class="container mx-auto px-4 flex justify-center space-x-6 sm:space-x-8 py-3">
+            <a href="#" id="navHome" class="nav-item py-2 px-3 text-gray-600 hover:text-[#FF6400] font-medium">หน้าแรก</a>
+            <a href="#" id="navRecipes" class="nav-item py-2 px-3 text-gray-600 hover:text-[#FF6400] font-medium">สูตรอาหาร</a>
+            
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-2">
+        <section id="homePage" class="page">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-semibold mb-2">ค้นหาสูตรอาหาร</h2>
+                <p class="text-gray-600">พบกับประสบการณ์ใหม่ๆ ใกล้ตัวคุณ</p>
+            </div>
+            <div class="max-w-2xl mx-auto mb-10">
+                <div class="relative">
+                    <input type="text" placeholder="พิมพ์สูตรอาหารที่ต้องการ..." class="w-full form-input py-3 px-5 pr-12 text-lg shadow-sm">
+                    <button class="absolute right-0 top-0 h-full px-5 text-white bg-[#FF6400] rounded-r-lg hover:bg-[#e05a00] flex items-center">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-semibold mb-6">สูตรอาหารแนะนำ</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="card">
+                    <img src="https://placehold.co/600x400/E2E8F0/AAAAAA?text=ร้านอาหาร+1" alt="[รูปภาพร้านอาหารตัวอย่าง 1]" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg mb-1">ร้านอร่อยใจกลางเมือง</h4>
+                        <p class="text-sm text-gray-500 mb-2"><i class="fas fa-map-marker-alt text-[#FF6400] mr-1"></i> สยาม</p>
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400"></i>
+                            <span class="ml-2 text-sm text-gray-600">4.5 (120 รีวิว)</span>
+                        </div>
+                        <p class="text-xs text-gray-600 bg-gray-100 inline-block px-2 py-1 rounded-full">อาหารไทย</p>
+                    </div>
+                </div>
+                 <div class="card">
+                    <img src="https://placehold.co/600x400/E2E8F0/AAAAAA?text=ร้านอาหาร+2" alt="[รูปภาพร้านอาหารตัวอย่าง 2]" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg mb-1">คาเฟ่สุดชิค</h4>
+                        <p class="text-sm text-gray-500 mb-2"><i class="fas fa-map-marker-alt text-[#FF6400] mr-1"></i> อารีย์</p>
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="far fa-star text-yellow-400"></i>
+                            <span class="ml-2 text-sm text-gray-600">4.0 (88 รีวิว)</span>
+                        </div>
+                        <p class="text-xs text-gray-600 bg-gray-100 inline-block px-2 py-1 rounded-full">เครื่องดื่มและเบเกอรี่</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://placehold.co/600x400/E2E8F0/AAAAAA?text=ร้านอาหาร+3" alt="[รูปภาพร้านอาหารตัวอย่าง 3]" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg mb-1">สตรีทฟู้ดเจ้าดัง</h4>
+                        <p class="text-sm text-gray-500 mb-2"><i class="fas fa-map-marker-alt text-[#FF6400] mr-1"></i> เยาวราช</p>
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <span class="ml-2 text-sm text-gray-600">4.8 (250 รีวิว)</span>
+                        </div>
+                        <p class="text-xs text-gray-600 bg-gray-100 inline-block px-2 py-1 rounded-full">อาหารจานเดียว</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://placehold.co/600x400/E2E8F0/AAAAAA?text=ร้านอาหาร+4" alt="[รูปภาพร้านอาหารตัวอย่าง 4]" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg mb-1">บุฟเฟต์นานาชาติ</h4>
+                        <p class="text-sm text-gray-500 mb-2"><i class="fas fa-map-marker-alt text-[#FF6400] mr-1"></i> สุขุมวิท</p>
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star-half-alt text-yellow-400"></i>
+                            <i class="far fa-star text-yellow-400"></i>
+                            <span class="ml-2 text-sm text-gray-600">3.9 (95 รีวิว)</span>
+                        </div>
+                        <p class="text-xs text-gray-600 bg-gray-100 inline-block px-2 py-1 rounded-full">บุฟเฟต์</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="registerPage" class="page hidden">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg mt-10">
+                <h2 class="text-3xl font-semibold text-center text-[#FF6400] mb-8">สมัครสมาชิก</h2>
+                <form id="registerForm" class="space-y-6">
+                    <div>
+                        <label for="registerDisplayName" class="block text-sm font-medium text-gray-700 mb-1">ชื่อที่แสดง</label>
+                        <input type="text" id="registerDisplayName" name="displayName" required class="w-full form-input" placeholder="เช่น Wongnok User">
+                    </div>
+                    <div>
+                        <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">อีเมล</label>
+                        <input type="email" id="registerEmail" name="email" required class="w-full form-input" placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">รหัสผ่าน</label>
+                        <input type="password" id="registerPassword" name="password" required class="w-full form-input" placeholder="••••••••">
+                        <p class="text-xs text-gray-500 mt-1">อย่างน้อย 6 ตัวอักษร</p>
+                    </div>
+                    <button type="submit" class="w-full btn-primary font-semibold py-3 rounded-lg hover:bg-opacity-90 transition duration-150">สมัครสมาชิก</button>
+                </form>
+                <p class="text-center text-sm text-gray-600 mt-6">
+                    มีบัญชีอยู่แล้ว? <a href="#" id="linkToLoginFromRegister" class="font-medium text-[#FF6400] hover:underline">เข้าสู่ระบบที่นี่</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="loginPage" class="page hidden">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg mt-10">
+                <h2 class="text-3xl font-semibold text-center text-[#FF6400] mb-8">เข้าสู่ระบบ</h2>
+                <form id="loginForm" class="space-y-6">
+                    <div>
+                        <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">อีเมล</label>
+                        <input type="email" id="loginEmail" name="email" required class="w-full form-input" placeholder="you@example.com">
+                    </div>
+                    <div>
+                        <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">รหัสผ่าน</label>
+                        <input type="password" id="loginPassword" name="password" required class="w-full form-input" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="w-full btn-primary font-semibold py-3 rounded-lg hover:bg-opacity-90 transition duration-150">เข้าสู่ระบบ</button>
+                </form>
+                <p class="text-center text-sm text-gray-600 mt-6">
+                    ยังไม่มีบัญชี? <a href="#" id="linkToRegisterFromLogin" class="font-medium text-[#FF6400] hover:underline">สมัครสมาชิกเลย</a>
+                </p>
+            </div>
+        </section>
+
+        <section id="profilePage" class="page hidden">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg mt-10 text-center">
+                <h2 class="text-3xl font-semibold text-[#FF6400] mb-6">โปรไฟล์ของฉัน</h2>
+                <div id="profileSpinner" class="my-8">
+                    <i class="fas fa-spinner fa-spin fa-3x text-[#FF6400]"></i>
+                    <p class="mt-2 text-gray-600">กำลังโหลดข้อมูล...</p>
+                </div>
+                <div id="profileDetails" class="hidden">
+                    <img id="profileUserImage" src="https://placehold.co/128x128/E2E8F0/AAAAAA?text=User" alt="[รูปโปรไฟล์]" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-[#FF6400]">
+                    <p class="text-xl">สวัสดี, <strong id="profileDisplayName" class="font-semibold"></strong>!</p>
+                    <p class="text-gray-600 mb-2" id="profileEmail"></p>
+                    <p class="text-gray-500 text-sm" id="profileUserId"></p>
+                    <button id="btnLogout" class="mt-8 btn-primary font-semibold py-2 px-6 rounded-lg hover:bg-opacity-90 transition duration-150">ออกจากระบบ</button>
+                </div>
+            </div>
+        </section>
+         <section id="restaurantsPage" class="page hidden"> <h2 class="text-2xl font-semibold mb-4">ร้านอาหารทั้งหมด</h2>
+            <p class="text-gray-600">หน้านี้จะแสดงรายการร้านอาหารทั้งหมด...</p>
+        </section>
+        <section id="recipesPage" class="page hidden">
+            <h2 class="text-2xl font-semibold mb-4">สูตรอาหารทั้งหมด</h2>
+            <p class="text-gray-600">หน้านี้จะแสดงรายการสูตรอาหารทั้งหมด...</p>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 mt-12 py-8 text-center">
+        <p class="text-gray-600">&copy; <span id="currentYear"></span> Wongnai Lite Sample. สร้างโดย AI.</p>
+    </footer>
+
+    <script type="module">
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyChcBLqG6gT2Ho1in0rtH8y82Jzk-6v-GI",
+            authDomain: "wongnok-recipes-b4505.firebaseapp.com",
+            projectId: "wongnok-recipes-b4505",
+            storageBucket: "wongnok-recipes-b4505.firebasestorage.app",
+            messagingSenderId: "894348307146",
+            appId: "1:894348307146:web:618e6117f7a03a3099a233",
+            measurementId: "G-W6KW6BRSNW"
+        };
+
+
+        // const appId for Firestore paths, using the one from firebaseConfig if __app_id is not defined
+        const appId = typeof __app_id !== 'undefined' ? __app_id : firebaseConfig.appId || 'wongnok recipes-default';
+
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            signOut, 
+            onAuthStateChanged,
+            updateProfile,
+            signInAnonymously,
+            signInWithCustomToken
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            getDoc,
+            collection 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Initialize Firebase (ONCE)
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        // Removed getAnalytics as it's not used and was part of the conflicting initialization
+
+        // DOM Elements
+        const pages = document.querySelectorAll('.page');
+        const navItems = document.querySelectorAll('.nav-item');
+        const authLinksContainer = document.getElementById('authLinks');
+        
+        const homePage = document.getElementById('homePage');
+        const registerPage = document.getElementById('registerPage');
+        const loginPage = document.getElementById('loginPage');
+        const profilePage = document.getElementById('profilePage');
+        const restaurantsPage = document.getElementById('restaurantsPage'); 
+        const recipesPage = document.getElementById('recipesPage');
+        const beautyPage = document.getElementById('beautyPage');
+
+        const registerForm = document.getElementById('registerForm');
+        const loginForm = document.getElementById('loginForm');
+        const btnLogout = document.getElementById('btnLogout');
+
+        const profileDisplayName = document.getElementById('profileDisplayName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileUserId = document.getElementById('profileUserId');
+        const profileSpinner = document.getElementById('profileSpinner');
+        const profileDetails = document.getElementById('profileDetails');
+        const profileUserImage = document.getElementById('profileUserImage');
+
+        // Modal elements
+        const messageModal = document.getElementById('messageModal');
+        const modalMessageText = document.getElementById('modalMessageText');
+
+        function showModal(message) {
+            modalMessageText.textContent = message;
+            messageModal.style.display = "block";
+        }
+
+        window.closeModal = function() { 
+            messageModal.style.display = "none";
+        }
+        
+        window.onclick = function(event) {
+            if (event.target == messageModal) {
+                messageModal.style.display = "none";
+            }
+        }
+
+        // Navigation
+        function showPage(pageId) {
+            pages.forEach(page => page.classList.add('hidden'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            } else {
+                console.warn(`Page with id "${pageId}" not found.`);
+            }
+
+            navItems.forEach(item => item.classList.remove('active-nav'));
+            const activeNavItem = document.getElementById(`nav${pageId.replace('Page', '')}`);
+            if (activeNavItem) {
+                activeNavItem.classList.add('active-nav');
+            } else if (pageId === 'homePage') { 
+                 const navHomeElement = document.getElementById('navHome');
+                 if (navHomeElement) navHomeElement.classList.add('active-nav');
+            }
+        }
+        
+        const navHomeLink = document.getElementById('navHome');
+        if (navHomeLink) navHomeLink.addEventListener('click', (e) => { e.preventDefault(); showPage('homePage'); });
+        
+        const navRecipesLink = document.getElementById('navRecipes');
+        if (navRecipesLink) navRecipesLink.addEventListener('click', (e) => { e.preventDefault(); showPage('recipesPage'); });
+        
+        const navBeautyLink = document.getElementById('navBeauty');
+        if (navBeautyLink) navBeautyLink.addEventListener('click', (e) => { e.preventDefault(); showPage('beautyPage'); });
+
+        const linkToLoginFromRegisterEl = document.getElementById('linkToLoginFromRegister');
+        if (linkToLoginFromRegisterEl) linkToLoginFromRegisterEl.addEventListener('click', (e) => { e.preventDefault(); showPage('loginPage'); });
+        
+        const linkToRegisterFromLoginEl = document.getElementById('linkToRegisterFromLogin');
+        if (linkToRegisterFromLoginEl) linkToRegisterFromLoginEl.addEventListener('click', (e) => { e.preventDefault(); showPage('registerPage'); });
+
+        function updateAuthUI(user) {
+            authLinksContainer.innerHTML = ''; 
+            if (user) {
+                const displayName = user.displayName || 'ผู้ใช้';
+                authLinksContainer.innerHTML = `
+                    <a href="#" id="linkToProfile" class="text-gray-700 hover:text-[#FF6400] font-medium flex items-center">
+                        <img src="${user.photoURL || 'https://placehold.co/32x32/E2E8F0/AAAAAA?text=U'}" alt="[รูปโปรไฟล์เล็ก]" class="w-8 h-8 rounded-full mr-2 border">
+                        <span id="userDisplayNameNav">${displayName}</span>
+                    </a>
+                    <button id="navBtnLogout" class="btn-primary text-sm py-2 px-4 rounded-lg">ออกจากระบบ</button>
+                `;
+                const linkToProfileEl = document.getElementById('linkToProfile');
+                if (linkToProfileEl) linkToProfileEl.addEventListener('click', (e) => { e.preventDefault(); showPage('profilePage'); loadUserProfile(user); });
+                
+                const navBtnLogoutEl = document.getElementById('navBtnLogout');
+                if (navBtnLogoutEl) navBtnLogoutEl.addEventListener('click', handleLogout);
+
+            } else {
+                authLinksContainer.innerHTML = `
+                    <a href="#" id="linkToLogin" class="text-gray-700 hover:text-[#FF6400] font-medium">เข้าสู่ระบบ</a>
+                    <a href="#" id="linkToRegister" class="btn-primary text-sm py-2 px-4 rounded-lg">สมัครสมาชิก</a>
+                `;
+                const linkToLoginEl = document.getElementById('linkToLogin');
+                if (linkToLoginEl) linkToLoginEl.addEventListener('click', (e) => { e.preventDefault(); showPage('loginPage'); });
+                
+                const linkToRegisterEl = document.getElementById('linkToRegister');
+                if (linkToRegisterEl) linkToRegisterEl.addEventListener('click', (e) => { e.preventDefault(); showPage('registerPage'); });
+            }
+        }
+        
+        onAuthStateChanged(auth, async (user) => {
+            updateAuthUI(user);
+            if (user) {
+                console.log("User is signed in:", user);
+                if (loginPage && !loginPage.classList.contains('hidden') || registerPage && !registerPage.classList.contains('hidden')) {
+                    showPage('homePage');
+                }
+                if (profilePage && !profilePage.classList.contains('hidden')) {
+                    loadUserProfile(user);
+                }
+            } else {
+                console.log("User is signed out.");
+                if (profilePage && !profilePage.classList.contains('hidden')) {
+                    showPage('homePage');
+                }
+            }
+        });
+
+        if (registerForm) {
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const displayName = registerForm.displayName.value;
+                const email = registerForm.email.value;
+                const password = registerForm.password.value;
+
+                if (password.length < 6) {
+                    showModal("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร");
+                    return;
+                }
+
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    
+                    await updateProfile(user, { displayName: displayName });
+
+                    const userDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profile/data`);
+                    await setDoc(userDocRef, {
+                        uid: user.uid,
+                        displayName: displayName,
+                        email: user.email,
+                        createdAt: new Date().toISOString()
+                    });
+
+                    console.log("User registered and profile created:", user);
+                    showModal(`สมัครสมาชิกสำเร็จ! สวัสดีคุณ ${displayName}`);
+                    registerForm.reset();
+                    showPage('homePage');
+                } catch (error) {
+                    console.error("Error registering user:", error);
+                    showModal(`เกิดข้อผิดพลาดในการสมัครสมาชิก: ${mapFirebaseErrorToThai(error.code)}`);
+                }
+            });
+        }
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = loginForm.email.value;
+                const password = loginForm.password.value;
+
+                try {
+                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                    const user = userCredential.user;
+                    console.log("User logged in:", user);
+                    showModal(`เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับคุณ ${user.displayName || user.email}`);
+                    loginForm.reset();
+                    showPage('homePage');
+                } catch (error) {
+                    console.error("Error logging in:", error);
+                    showModal(`เกิดข้อผิดพลาดในการเข้าสู่ระบบ: ${mapFirebaseErrorToThai(error.code)}`);
+                }
+            });
+        }
+
+        async function handleLogout() {
+            try {
+                await signOut(auth);
+                console.log("User logged out");
+                showModal("ออกจากระบบสำเร็จแล้ว");
+                showPage('homePage');
+                if (profileDetails) profileDetails.classList.add('hidden');
+                if (profileSpinner) profileSpinner.classList.remove('hidden');
+                if (profileDisplayName) profileDisplayName.textContent = '';
+                if (profileEmail) profileEmail.textContent = '';
+                if (profileUserId) profileUserId.textContent = '';
+                if (profileUserImage) profileUserImage.src = 'https://placehold.co/128x128/E2E8F0/AAAAAA?text=User';
+            } catch (error) {
+                console.error("Error logging out:", error);
+                showModal("เกิดข้อผิดพลาดในการออกจากระบบ");
+            }
+        }
+        if (btnLogout) { 
+            btnLogout.addEventListener('click', handleLogout);
+        }
+
+        async function loadUserProfile(user) {
+            if (!user) {
+                showPage('loginPage');
+                return;
+            }
+            showPage('profilePage'); 
+            if(profileSpinner) profileSpinner.classList.remove('hidden');
+            if(profileDetails) profileDetails.classList.add('hidden');
+
+            try {
+                if(profileDisplayName) profileDisplayName.textContent = user.displayName || "N/A";
+                if(profileEmail) profileEmail.textContent = `อีเมล: ${user.email || "N/A"}`;
+                if(profileUserId) profileUserId.textContent = `UserID: ${user.uid}`; 
+                if(profileUserImage) profileUserImage.src = user.photoURL || 'https://placehold.co/128x128/E2E8F0/AAAAAA?text=U';
+
+                const userDocRef = doc(db, `artifacts/${appId}/users/${user.uid}/profile/data`);
+                const docSnap = await getDoc(userDocRef);
+
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
+                    console.log("Firestore user data:", userData);
+                    if (userData.displayName && profileDisplayName) profileDisplayName.textContent = userData.displayName;
+                } else {
+                    console.log("No such document in Firestore for user profile!");
+                }
+
+                if(profileSpinner) profileSpinner.classList.add('hidden');
+                if(profileDetails) profileDetails.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Error loading user profile:", error);
+                if(profileSpinner) profileSpinner.classList.add('hidden');
+                if(profileDetails) profileDetails.classList.remove('hidden'); 
+                if(profileDisplayName) profileDisplayName.textContent = user.displayName || "N/A (Error loading details)";
+                if(profileEmail) profileEmail.textContent = `อีเมล: ${user.email || "N/A"}`;
+                showModal("เกิดข้อผิดพลาดในการโหลดข้อมูลโปรไฟล์");
+            }
+        }
+
+        function mapFirebaseErrorToThai(errorCode) {
+            switch (errorCode) {
+                case 'auth/email-already-in-use':
+                    return 'อีเมลนี้ถูกใช้งานแล้ว';
+                case 'auth/invalid-email':
+                    return 'รูปแบบอีเมลไม่ถูกต้อง';
+                case 'auth/operation-not-allowed':
+                    return 'การดำเนินการนี้ไม่ได้รับอนุญาต';
+                case 'auth/weak-password':
+                    return 'รหัสผ่านไม่รัดกุมเพียงพอ (ต้องมีอย่างน้อย 6 ตัวอักษร)';
+                case 'auth/user-disabled':
+                    return 'บัญชีผู้ใช้นี้ถูกระงับ';
+                case 'auth/user-not-found':
+                    return 'ไม่พบบัญชีผู้ใช้นี้';
+                case 'auth/wrong-password':
+                    return 'รหัสผ่านไม่ถูกต้อง';
+                case 'auth/invalid-credential':
+                     return 'ข้อมูลการเข้าสู่ระบบไม่ถูกต้อง (อีเมลหรือรหัสผ่านผิด)';
+                default:
+                    return `เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ (${errorCode})`;
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            const currentYearEl = document.getElementById('currentYear');
+            if (currentYearEl) currentYearEl.textContent = new Date().getFullYear();
+            
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    console.log("Attempting to sign in with custom token...");
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                    console.log("Successfully signed in with custom token.");
+                } else {
+                    console.log("No custom token found, attempting anonymous sign-in...");
+                    await signInAnonymously(auth);
+                    console.log("Successfully signed in anonymously.");
+                }
+            } catch (error) {
+                console.error("Error during initial sign-in (custom/anonymous):", error);
+            }
+
+            showPage('homePage'); 
+        });
+
+    </script>
+</body>
+</html>
